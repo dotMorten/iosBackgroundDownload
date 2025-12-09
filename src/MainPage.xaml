@@ -8,17 +8,15 @@
             Padding="30,0"
             Spacing="25">
             <Label x:Name="Progress"
-                Text="Hello, World!"
                 Style="{StaticResource Headline}"
                 SemanticProperties.HeadingLevel="Level1" />
 
             <Button x:Name="Deletebtn" Text="Delete File" IsEnabled="False" Clicked="Deletebtn_Clicked" />
 
             <Button
-                x:Name="CounterBtn"
-                Text="Click me" 
-                SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
+                x:Name="DownloadBtn"
+                Text="Download" 
+                Clicked="OnDownloadClicked"
                 HorizontalOptions="Fill" />
         </VerticalStackLayout>
     </ScrollView>

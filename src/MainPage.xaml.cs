@@ -15,10 +15,6 @@ namespace IOSBackgroundDownload
         public MainPage()
         {
             InitializeComponent();
-            // CounterBtn.GestureRecognizers.Add(new TapGestureRecognizer
-            // {
-            //     Command = new Command(() => OnCounterClicked(this, EventArgs.Empty))
-            // });
             var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             filepath = Path.Combine(Path.GetTempPath(), "DataDownload.zip");
             UpdatebuttonState();
@@ -28,15 +24,19 @@ namespace IOSBackgroundDownload
         public void UpdatebuttonState()
         {
             bool exists = File.Exists(filepath);
-            CounterBtn.IsEnabled = !exists;
+            DownloadBtn.IsEnabled = !exists;
             Deletebtn.IsEnabled = exists;
             if (exists)
             {
-                CounterBtn.Text = "File Downloaded";
+                Progress.Text = "File Downloaded";
+            }
+            else
+            {
+                Progress.Text = "Click to start download";
             }
         }
 
-        private async void OnCounterClicked(object? sender, EventArgs e)
+        private async void OnDownloadClicked(object? sender, EventArgs e)
         {
             try
             {
@@ -47,8 +47,9 @@ namespace IOSBackgroundDownload
                 });
 
 
-                CounterBtn.Text = "Downloading...";
-                
+                DownloadBtn.Text = "Downloading...";
+                DownloadBtn.IsEnabled = false;
+
                 var handler = MainPage.BackgroundHandler;
                 using var client = new HttpClient(handler, false);
                 
@@ -66,8 +67,9 @@ namespace IOSBackgroundDownload
                 using var content = response.Content as dotMorten.Http.NSUrlSessionHandler.NSUrlDownloadFileContent;
                 Debug.WriteLine($"Downloaded file: {content?.FilePath}");
                 Debug.WriteLine($"  Suggested name: {content?.SuggestedFilename}");
-                
-                CounterBtn.Text = "OK";
+
+                DownloadBtn.Text = "Download";
+                Progress.Text = "Download compelted";
 
                 client.Dispose();
 #endif
@@ -75,6 +77,8 @@ namespace IOSBackgroundDownload
             catch(System.Exception ex)
             {
                 Debugger.Break();
+                DownloadBtn.IsEnabled = true;
+                Progress.Text = ex.Message;
             }
             UpdatebuttonState();
         }
