@@ -69,7 +69,7 @@ namespace IOSBackgroundDownload
                 Debug.WriteLine($"  Suggested name: {content?.SuggestedFilename}");
 
                 DownloadBtn.Text = "Download";
-                Progress.Text = "Download compelted";
+                Progress.Text = "Download completed";
 
                 client.Dispose();
 #endif
